@@ -1,0 +1,746 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3D5F6E94-F48D-4FB8-9127-CF1309A175A9}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheSite</RootNamespace>
+    <AssemblyName>DeltaMicroCourse.Weixin</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Senparc.Weixin, Version=4.5.16.25603, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.4.5.16\lib\net45\Senparc.Weixin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP, Version=13.6.10.25605, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.MP.13.6.10\lib\net45\Senparc.Weixin.MP.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Symber.Web.APQuery, Version=4.0.4.3, Culture=neutral, PublicKeyToken=5f8081ae21b51971, processorArchitecture=MSIL">
+      <HintPath>..\packages\Symber.Web.APQuery.4.0.4.3\lib\net452\Symber.Web.APQuery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Business\Business.apgen.cs" />
+    <Compile Include="Business\Cache\ThisAppCache.cs" />
+    <Compile Include="Business\Project\ThisApp.cs" />
+    <Compile Include="Business\DataDef\WeiXinExpert.cs" />
+    <Compile Include="Business\DataDef\CourseInfo.cs" />
+    <Compile Include="Business\Handler\SearchHandler.cs" />
+    <Compile Include="Business\Utils\StaticKeys.cs" />
+    <Compile Include="Business\Project\Columns\PickListAPRptColumn.cs" />
+    <Compile Include="Business\Project\ThisApp.PickList.cs" />
+    <Compile Include="Business\System.Web.MVC\AjaxResults.cs" />
+    <Compile Include="Business\System.Web.MVC\Attribute\OAuthAttribute.cs" />
+    <Compile Include="Business\Utils\ActiveHelper.cs" />
+    <Compile Include="Business\Utils\CroResourceHelper.cs" />
+    <Compile Include="Business\Utils\EvalGroupHelper.cs" />
+    <Compile Include="Business\Utils\FileHelper.cs" />
+    <Compile Include="Business\Utils\IndicationHelper.cs" />
+    <Compile Include="Business\Weixin\CustomMessageContext.cs" />
+    <Compile Include="Business\Weixin\CustomMessageHandler.cs" />
+    <Compile Include="Business\Weixin\MenuManager.cs" />
+    <Compile Include="Business\Weixin\Utilities\IdentityCardHelper.cs" />
+    <Compile Include="Business\Weixin\Utilities\OAuth2Helper.cs" />
+    <Compile Include="Business\Weixin\Utilities\QrCodeHelper.cs" />
+    <Compile Include="Business\Weixin\Utilities\SignatureHelper.cs" />
+    <Compile Include="Business\Weixin\WeixinConfigHelper.cs" />
+    <Compile Include="Business\Weixin\WeixinResult.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\ExpertController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Business\Utils\Paging.cs" />
+    <Compile Include="Controllers\ChartController.cs" />
+    <Compile Include="Controllers\NoticeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CategoryModels.cs" />
+    <Compile Include="Models\CourseViewModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\js\agile.js" />
+    <Content Include="assets\js\app.flot.js" />
+    <Content Include="assets\js\app.js" />
+    <Content Include="assets\js\app.seedsui.js" />
+    <Content Include="assets\js\bootstrap.min.js" />
+    <Content Include="assets\js\ckplayer.js" />
+    <Content Include="assets\js\iscroll-probe.js" />
+    <Content Include="assets\js\iscroll.js" />
+    <Content Include="assets\js\jquery-2.1.3.min.js" />
+    <Content Include="assets\js\jquery.flot.barnumbers.js" />
+    <Content Include="assets\js\jquery.flot.min.js" />
+    <Content Include="assets\js\jquery.mobile.custom.js" />
+    <Content Include="assets\js\jquery.validate.min.js" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\ckplayer.js" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\ckplayer.swf" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\ckplayer.xml" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\language.xml" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\related.xml" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share.xml" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\feixin.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\google.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\kaixin001.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\msn.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\qq.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\qq2.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\qzone.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\rr.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\sina.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\sohu.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\tianya.png" />
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\style.swf" />
+    <Content Include="assets\plugins\ckplayer6.8\index.htm" />
+    <Content Include="assets\plugins\ckplayer6.8\js\offlights.js" />
+    <Content Include="assets\plugins\jquery.bootgrid-1.1.4\jquery.bootgrid.css" />
+    <Content Include="assets\plugins\jquery.bootgrid-1.1.4\jquery.bootgrid.filters.js" />
+    <Content Include="assets\plugins\jquery.bootgrid-1.1.4\jquery.bootgrid.filters.min.js" />
+    <Content Include="assets\plugins\jquery.bootgrid-1.1.4\jquery.bootgrid.js" />
+    <Content Include="assets\plugins\jquery.bootgrid-1.1.4\jquery.bootgrid.min.css" />
+    <Content Include="assets\plugins\jquery.bootgrid-1.1.4\jquery.bootgrid.min.js" />
+    <Content Include="assets\themes\agilelite\assets\agile\css\agile.layout.css" />
+    <Content Include="assets\themes\agilelite\assets\agile\img\pull-icon%402x.png" />
+    <Content Include="assets\themes\agilelite\assets\agile\js\agile.js" />
+    <Content Include="assets\themes\agilelite\assets\app\css\app.css" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\album.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\chat.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\comments.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\down.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\earth.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\file.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\friends.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\home.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\img.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\message.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\phone.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\position.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\pull.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\readmark.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\search.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\share.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\about\tel.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\allogo.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\androidbg.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\about.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\about_active.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\contact.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\doc.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\feedback.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\feedback_active.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\guide.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\guide_active.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\newspaper.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\notice.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\photo.jpg" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\photo.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\switch_off.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\switch_on.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\trash.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\trash_active.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\weather.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\weather_active.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\weibo.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\aside\weibo_active.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\ca.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\default_header.jpg" />
+    <Content Include="assets\themes\agilelite\assets\app\img\iosbg.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\list\defaultimg.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\list\list_img.jpg" />
+    <Content Include="assets\themes\agilelite\assets\app\img\logo-exmobi.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\logobg.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\qrcode.png" />
+    <Content Include="assets\themes\agilelite\assets\app\img\slide1.jpg" />
+    <Content Include="assets\themes\agilelite\assets\app\img\slide2.jpg" />
+    <Content Include="assets\themes\agilelite\assets\app\img\slide3.jpg" />
+    <Content Include="assets\themes\agilelite\assets\app\img\top.png" />
+    <Content Include="assets\themes\agilelite\assets\app\js\about.js" />
+    <Content Include="assets\themes\agilelite\assets\app\js\app.js" />
+    <Content Include="assets\themes\agilelite\assets\app\js\app.seedsui.js" />
+    <Content Include="assets\themes\agilelite\assets\app\js\h5.base.js" />
+    <Content Include="assets\themes\agilelite\assets\app\js\index.js" />
+    <Content Include="assets\js\agile.exmobi.js" />
+    <Content Include="assets\js\exmobi.js" />
+    <Content Include="assets\themes\agilelite\assets\bridge\agile.exmobi.js" />
+    <Content Include="assets\themes\agilelite\assets\bridge\exmobi.js" />
+    <Content Include="assets\themes\agilelite\assets\component\calendar\agile.calendar.js" />
+    <Content Include="assets\themes\agilelite\assets\component\calendar\calendar.css" />
+    <Content Include="assets\themes\agilelite\assets\component\exlist\agile.exlist.js" />
+    <Content Include="assets\themes\agilelite\assets\component\exlist\exlist.css" />
+    <Content Include="assets\themes\agilelite\assets\component\extend.js" />
+    <Content Include="assets\themes\agilelite\assets\component\timepicker\agile.timepicker.js" />
+    <Content Include="assets\themes\agilelite\assets\component\timepicker\timepicker.css" />
+    <Content Include="assets\themes\agilelite\assets\img\1.jpg" />
+    <Content Include="assets\themes\agilelite\assets\img\3.jpg" />
+    <Content Include="assets\themes\agilelite\assets\img\code.jpg" />
+    <Content Include="assets\themes\agilelite\assets\img\festival.jpg" />
+    <Content Include="assets\themes\agilelite\assets\img\中秋.jpg" />
+    <Content Include="assets\themes\agilelite\assets\img\数学公开课.jpg" />
+    <Content Include="assets\themes\agilelite\assets\third\arttemplate\template-native.js" />
+    <Content Include="assets\themes\agilelite\assets\third\arttemplate\template.js" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\animate.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\flat.color.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\flat.component.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\flat.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconform.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconline.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconlogo.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconweather.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\iconform.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\iconline.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\iconlogo.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\iconweather.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\loading.css" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\welcome.css" />
+    <Content Include="assets\themes\agilelite\assets\third\iscroll\iscroll-infinite.js" />
+    <Content Include="assets\themes\agilelite\assets\third\iscroll\iscroll-lite.js" />
+    <Content Include="assets\themes\agilelite\assets\third\iscroll\iscroll-probe.js" />
+    <Content Include="assets\themes\agilelite\assets\third\iscroll\iscroll-zoom.js" />
+    <Content Include="assets\themes\agilelite\assets\third\iscroll\iscroll.js" />
+    <Content Include="assets\themes\agilelite\assets\third\jquery\jquery-2.1.3.js" />
+    <Content Include="assets\themes\agilelite\assets\third\jquery\jquery-2.1.3.min.js" />
+    <Content Include="assets\themes\agilelite\assets\third\jquery\jquery.mobile.custom.js" />
+    <Content Include="assets\themes\agilelite\assets\third\jquery\jquery.mobile.custom.min.js" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\css\ratchet-theme-android.css" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\css\ratchet-theme-android.min.css" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\css\ratchet-theme-ios.css" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\css\ratchet-theme-ios.min.css" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\css\ratchet.css" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\css\ratchet.min.css" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\fonts\ratchicons.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\js\ratchet.js" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\js\ratchet.min.js" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\animate\animate.css" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\fonts\iconfont.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\404.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\500.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\aoman.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\baibai.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\baiyan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\baobao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\baoquan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\bishi.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\bizui.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\cahan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\caidao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\chajin.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\chouyan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\cool.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\dabian.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\dahaqian.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\daku.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\dangao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\daxiao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\deyi.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\fadai.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\fanu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\fendou.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\ganga.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\gongxi.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\haixiu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\hanruyuxia.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\hongchun.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\huaixiao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\huaxiele.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\iloveyou.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\jianxiao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\jiayou.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\jingxia.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\jingya.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\kafei.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\kaixin.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\kelian.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\ku.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\kulou.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\kun.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\lai.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\lanqiu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\liuhan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\liwu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\maren.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\meigui.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\mifan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\nanguo.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\no.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\ok.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\outu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\piaochong.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\pijiu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\qiang.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\qiaotou.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\qingqing.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\qiu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\ruo.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\se.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\shandian.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\shangxin.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\shouweiqu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\shuai.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\shuijiao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\taiyang.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\touxiao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\wabikong.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\weiqu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\weixiao.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\wen.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\woshou.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\xia.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\xigua.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\xin.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\xinsui.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\xu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\yeah.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\yewan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\youhengheng.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\yun.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\zhadan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\zhayan.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\zhutou.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\ziya.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\zuohengheng.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\emoji\zuqiu.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\gauge\gauge-pointer.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\gauge\gauge.png" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\nowifi.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\img\refresh.svg" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\seedsui.min.css" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\seedsui.min.js" />
+    <Content Include="assets\themes\agilelite\assets\third\weui\agile.weui.css" />
+    <Content Include="assets\themes\agilelite\assets\third\weui\weui.css" />
+    <Content Include="assets\themes\agilelite\assets\third\weui\weui.min.css" />
+    <Content Include="assets\themes\agilelite\assets\third\zepto\zepto.min.js" />
+    <Content Include="assets\themes\agilelite\core\agiletemplate.html" />
+    <Content Include="assets\themes\agilelite\core\arttemplate.html" />
+    <Content Include="assets\themes\agilelite\core\aside.html" />
+    <Content Include="assets\themes\agilelite\core\color.html" />
+    <Content Include="assets\themes\agilelite\core\controller.html" />
+    <Content Include="assets\themes\agilelite\core\fourth_modal.html" />
+    <Content Include="assets\themes\agilelite\core\iscrollevent.html" />
+    <Content Include="assets\themes\agilelite\core\lazyload.html" />
+    <Content Include="assets\themes\agilelite\core\multi.html" />
+    <Content Include="assets\themes\agilelite\core\popup.html" />
+    <Content Include="assets\themes\agilelite\core\refresh.html" />
+    <Content Include="assets\themes\agilelite\core\scroll.html" />
+    <Content Include="assets\themes\agilelite\core\single.html" />
+    <Content Include="assets\themes\agilelite\core\slider.html" />
+    <Content Include="assets\themes\agilelite\core\tree.html" />
+    <Content Include="assets\themes\agilelite\core\work.html" />
+    <Content Include="assets\themes\agilelite\flatui\animate.html" />
+    <Content Include="assets\themes\agilelite\flatui\button.html" />
+    <Content Include="assets\themes\agilelite\flatui\calendar.html" />
+    <Content Include="assets\themes\agilelite\flatui\color.html" />
+    <Content Include="assets\themes\agilelite\flatui\form.html" />
+    <Content Include="assets\themes\agilelite\flatui\icon.html" />
+    <Content Include="assets\themes\agilelite\flatui\icon_form.html" />
+    <Content Include="assets\themes\agilelite\flatui\icon_logo.html" />
+    <Content Include="assets\themes\agilelite\flatui\index.html" />
+    <Content Include="assets\themes\agilelite\flatui\list.html" />
+    <Content Include="assets\themes\agilelite\flatui\list_edit.html" />
+    <Content Include="assets\themes\agilelite\flatui\list_more.html" />
+    <Content Include="assets\themes\agilelite\flatui\menu.html" />
+    <Content Include="assets\themes\agilelite\ratchet\index.html" />
+    <Content Include="assets\themes\agilelite\ratchet\ratchet_button_section.html" />
+    <Content Include="assets\themes\agilelite\ratchet\ratchet_form_section.html" />
+    <Content Include="assets\themes\agilelite\ratchet\ratchet_icon_section.html" />
+    <Content Include="assets\themes\agilelite\ratchet\ratchet_layout_section.html" />
+    <Content Include="assets\themes\agilelite\ratchet\ratchet_list_section.html" />
+    <Content Include="assets\themes\agilelite\seedsui\404.html" />
+    <Content Include="assets\themes\agilelite\seedsui\500.html" />
+    <Content Include="assets\themes\agilelite\seedsui\animate.html" />
+    <Content Include="assets\themes\agilelite\seedsui\aside.html" />
+    <Content Include="assets\themes\agilelite\seedsui\bar.html" />
+    <Content Include="assets\themes\agilelite\seedsui\bg.html" />
+    <Content Include="assets\themes\agilelite\seedsui\button.html" />
+    <Content Include="assets\themes\agilelite\seedsui\calendar.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-bar.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-doughnut.color.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-doughnut.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-line-customTooltips.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-line.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-pie-customTooltips.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-pie.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-polar-area.html" />
+    <Content Include="assets\themes\agilelite\seedsui\charts-radar.html" />
+    <Content Include="assets\themes\agilelite\seedsui\chat.html" />
+    <Content Include="assets\themes\agilelite\seedsui\clock.html" />
+    <Content Include="assets\themes\agilelite\seedsui\code.html" />
+    <Content Include="assets\themes\agilelite\seedsui\dragrefresh.html" />
+    <Content Include="assets\themes\agilelite\seedsui\drawsvg.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-cache.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-camera.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-gps.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-pattern.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-qrcode.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-tel.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-third.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-webview-second.html" />
+    <Content Include="assets\themes\agilelite\seedsui\exmobi-webview.html" />
+    <Content Include="assets\themes\agilelite\seedsui\form-serialize.html" />
+    <Content Include="assets\themes\agilelite\seedsui\form-validate.html" />
+    <Content Include="assets\themes\agilelite\seedsui\form.html" />
+    <Content Include="assets\themes\agilelite\seedsui\gauge.html" />
+    <Content Include="assets\themes\agilelite\seedsui\grid.html" />
+    <Content Include="assets\themes\agilelite\seedsui\iconfont.html" />
+    <Content Include="assets\themes\agilelite\seedsui\index.html" />
+    <Content Include="assets\themes\agilelite\seedsui\layout.html" />
+    <Content Include="assets\themes\agilelite\seedsui\list.html" />
+    <Content Include="assets\themes\agilelite\seedsui\loading.html" />
+    <Content Include="assets\themes\agilelite\seedsui\local-db.html" />
+    <Content Include="assets\themes\agilelite\seedsui\local-gps.html" />
+    <Content Include="assets\themes\agilelite\seedsui\local-map.html" />
+    <Content Include="assets\themes\agilelite\seedsui\local-photoselect.html" />
+    <Content Include="assets\themes\agilelite\seedsui\local-share.html" />
+    <Content Include="assets\themes\agilelite\seedsui\nowifi.html" />
+    <Content Include="assets\themes\agilelite\seedsui\popup.html" />
+    <Content Include="assets\themes\agilelite\seedsui\progressbar.html" />
+    <Content Include="assets\themes\agilelite\seedsui\shape.html" />
+    <Content Include="assets\themes\agilelite\seedsui\single.html" />
+    <Content Include="assets\themes\agilelite\seedsui\slider-page.html" />
+    <Content Include="assets\themes\agilelite\seedsui\slider.html" />
+    <Content Include="assets\themes\agilelite\seedsui\tabbar.html" />
+    <Content Include="assets\themes\agilelite\seedsui\table.html" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\404.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\500.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\animate.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\aside.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\bar.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\bg.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\button.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\calendar.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-bar.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-doughnut.color.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-doughnut.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-line-customTooltips.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-line.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-pie-customTooltips.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-pie.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-polar-area.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\charts-radar.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\chat.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\clock.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\code.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\countto.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\dragrefresh.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-cache.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-camera.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-gps.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-pattern.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-qrcode.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-tel.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-third.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\exmobi-webview.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\form-serialize.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\form-validate.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\form.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\gauge.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\grid.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\iconfont.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\layout.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\list.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\loading.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\local-db.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\local-gps.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\local-map.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\local-photoselect.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\local-share.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\nowifi.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\popup.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\progressbar.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\shake.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\shape.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\single.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\slider-page.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\slider.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\tabbar.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\table.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\tree-selected.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\tree.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\video.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\weather.png" />
+    <Content Include="assets\themes\agilelite\seedsui\thumbnail\weixin.png" />
+    <Content Include="assets\themes\agilelite\seedsui\tree-selected.html" />
+    <Content Include="assets\themes\agilelite\seedsui\tree.html" />
+    <Content Include="assets\themes\agilelite\seedsui\video.html" />
+    <Content Include="assets\themes\agilelite\seedsui\weather.html" />
+    <Content Include="assets\themes\agilelite\seedsui\weixin.html" />
+    <Content Include="assets\themes\agilelite\weui\index.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_actionSheet_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_article_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_button_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_cell_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_dialog_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_icons_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_msg_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_progress_section.html" />
+    <Content Include="assets\themes\agilelite\weui\weui_toast_section.html" />
+    <Content Include="crossdomain.xml" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="assets\fonts\" />
+    <Folder Include="assets\ico\" />
+    <Folder Include="assets\img\" />
+    <Folder Include="assets\sass\" />
+    <Folder Include="Attachments\" />
+    <Folder Include="Business\Weixin\Services\" />
+    <Folder Include="Views\Utilties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="Business\Business.apgen">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="assets\plugins\ckplayer6.8\ckplayer\share\update.php" />
+    <Content Include="assets\themes\agilelite\assets\readme" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\flat.color.less" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconform.eot" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconform.ttf" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconform.woff" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconline.eot" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconline.ttf" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconline.woff" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconlogo.eot" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconlogo.ttf" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconlogo.woff" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconweather.eot" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconweather.ttf" />
+    <Content Include="assets\themes\agilelite\assets\third\flat\fonts\iconweather.woff" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\fonts\ratchicons.eot" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\fonts\ratchicons.ttf" />
+    <Content Include="assets\themes\agilelite\assets\third\ratchet\fonts\ratchicons.woff" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\LICENSE" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\fonts\iconfont.eot" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\fonts\iconfont.ttf" />
+    <Content Include="assets\themes\agilelite\assets\third\seedsui\plugin\seedsui\fonts\iconfont.woff" />
+    <Content Include="assets\themes\agilelite\json\template.json" />
+    <None Include="Properties\PublishProfiles\微信.pubxml" />
+    <None Include="Properties\PublishProfiles\服务器发布.pubxml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Course\Details.cshtml" />
+    <Content Include="Views\Course\List.cshtml" />
+    <Content Include="Views\Course\Search.cshtml" />
+    <Content Include="Views\Course\FavoriteList.cshtml" />
+    <Content Include="Views\Course\CategoryList.cshtml" />
+    <Content Include="Views\Course\CategoryItemList.cshtml" />
+    <Content Include="Views\Course\Home.cshtml" />
+    <Content Include="Views\Notice\Details.cshtml" />
+    <Content Include="Views\Chart\User.cshtml" />
+    <Content Include="Views\Shared\_ReportLayout.cshtml" />
+    <Content Include="Views\Chart\Course.cshtml" />
+    <Content Include="Views\Expert\List.cshtml" />
+    <Content Include="Views\Expert\Bind.cshtml" />
+    <Content Include="Views\Expert\WeiXinBind.cshtml" />
+    <None Include="xml.schema.definition\apgen.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="xml.schema.definition\apgen.xsx">
+      <DependentUpon>apgen.xsd</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>9353</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:9353/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此项目引用这台计算机上缺少的 NuGet 程序包。使用 NuGet 程序包还原可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

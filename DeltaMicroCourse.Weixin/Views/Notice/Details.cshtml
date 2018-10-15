@@ -1,0 +1,14 @@
+﻿@model Notice
+<style>
+	 .title,.date{margin-top:15px;}
+     .content{margin:10px;}
+</style>
+	<div id="sliderPage" data-role="slider" class="full">
+		<div id="page" class="slide page" data-scroll="verticle">
+			<div class="scroller">
+				<div class="title text-center"><h3>@Model.Title</h3></div>
+				<div class="date text-center"><h5>@Model.PublishDate</h5></div>
+				<div class="content">@Html.Raw(Model.Content)</div>
+			</div>
+		</div>
+	</div>

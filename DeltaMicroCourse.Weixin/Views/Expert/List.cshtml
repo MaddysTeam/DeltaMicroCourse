@@ -1,0 +1,213 @@
+﻿@{
+	ViewBag.Title = "微课程统计";
+	Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@section Css{
+	<link href="~/assets/plugins/jquery.bootgrid-1.1.4/jquery.bootgrid.css" rel="stylesheet" />
+}
+
+<div class="rows">
+	<div class="col-md-10 content-wrapper">
+		<div class="text-center"><h2>用户列表</h2></div>
+		<div class="table-responsive">
+			<table id="bootgrid" class="table table-striped table-hover table-dark-header">
+				<thead>
+					<tr>
+						<th data-column-id="name">用户名</th>
+						<th data-column-id="openid">OpenId</th>
+						<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-header-Css-Class="width160">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="rows">
+
+	<div class="col-md-10 content-wrapper">
+		<div class="text-center"><h2>微信用户列表</h2></div>
+		<div class="table-responsive">
+			<table id="wx_bootgrid" class="table table-striped table-hover table-dark-header">
+				<thead>
+					<tr>
+						<th data-column-id="openId">OpenId</th>
+						<th data-column-id="nickName">微信昵称</th>
+						<th data-column-id="gender">性别</th>
+						<th data-column-id="country">国家</th>
+						<th data-column-id="province">省份</th>
+						<th data-column-id="city">城市</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+@section Modals{
+	<button class="btn btn-md btn-custom-primary hidden" id="modelProxy" data-toggle="ajax-modal" data-target="#firstModal">代理</button>
+	<!-- Modal start -->
+	<div class="modal" id="firstModal" tabindex="-1" role="dialog" aria-labelledby="firstModalLabel" aria-hidden="true">
+	</div>
+	<!-- Modal end -->
+
+}
+@section Scripts{
+	<script>
+		$(function () {
+
+			// ajax modal
+			$(document).on('click.bs.modal.data-api', '[data-toggle="ajax-modal"]', function (event) {
+
+				var $this = $(this),
+					url = $this.data('url'),
+					$target = $($this.data('target'));
+
+				$.get(url, function (response) {
+					// ajax get form content
+					$target
+						.html(response)
+						.modal({ backdrop: 'static', keyboard: false })
+						.find('.form-control').first().focus();
+				});
+
+			});
+
+
+		});
+	</script>
+	<script src="~/assets/plugins/jquery.bootgrid-1.1.4/jquery.bootgrid.filters.min.js"></script>
+	<script>
+		// boot-grid
+
+		var gridOptions = {
+
+			ajax: true,
+
+			padding: 4,
+
+			rowCount: [10, 20, 50],
+
+			labels: {
+				all: "全部",
+				infos: "显示 {{ctx.start}} 到 {{ctx.end}} 共 {{ctx.total}} 记录",
+				loading: "数据加载中...",
+				noResults: "无可寻记录",
+				refresh: "重新加载",
+				search: "搜索"
+			},
+
+			//css: {
+			//	icon: "icon_n glyphicon",
+			//},
+
+			templates: {
+				footer: "<div id=\"{{ctx.id}}\" class=\"{{css.footer}}\"><div class=\"row infoBar\"><p class=\"{{css.pagination}}\"></p><p class=\"{{css.infos}}\"></p></div></div>"
+			},
+
+			formatters: {
+
+				"Boolean": function (column, row) { return row[column.id] ? "<i class=\"fa fa-check-square-o fa-lg\"></i>" : ""; },
+
+				"Current": function (column, row) { return "$" + row[column.id]; },
+
+				"DateTime": function (column, row) { return row[column.id] ? moment(row[column.id]).format('YYYY-MM-DD hh:mm:ss') : ''; },
+
+				"DateOnly": function (column, row) { return row[column.id] ? moment(row[column.id]).format('YYYY-MM-DD') : ''; },
+
+				"Email": function (column, row) { return "<a href='mailto:" + row[column.id] + "'>" + row[column.id] + "</a>"; },
+
+				"Percent": function (column, row) { return row[column.id] + " %"; },
+
+				"TimeOnly": function (column, row) { return row[column.id]; },
+
+				"Url": function (column, row) {
+					var text = row[column.id], url = text;
+					if (!(typeof text === "string")) { url = text.url; text = text.text; }
+					return "<a href='" + url + "'>" + text + "</a>";
+				},
+
+			},
+
+			responseHandler: function (response) {
+				if (response.errMessage) {
+					alert(response.errMessage);
+					return { current: 1, rowCount: 10, rows: [], total: 0 };
+				}
+				else {
+					return response;
+				}
+			},
+
+			loadDataErrorHandler: function (errMessage) {
+				alert(errMessage);
+			}
+
+		};
+
+		function getGridOptions() {
+			return $.extend(true, {}, gridOptions, {
+
+				url: window.location.href,
+
+				formatters: {
+					'commands': function (column, row) {
+						var id = row.id;
+
+						if (!row.isBind)
+							return '<div class="btn-group btn-group-xs pull-right" data-row-id="' + row.id + '" data-row-active="' + row.actived + '">' +
+													 '<button class="btn btn-success btn-edit btn-binding">绑定微信号</button>' +
+													 '</div>';
+						else {
+						    return '<div class="btn-group btn-group-xs pull-right" data-url="@Url.Action("UnBind", "Expert")?UserId=' + row.id + '&OpenId=' + row.openid + '">' +
+												 '<button class="btn btn-info btn-edit btn-unbind">取消绑定</button>' +
+												 '</div>';
+						}
+					},
+				},
+			});
+		}
+
+
+
+		function getWeiXinUserGridOptions() {
+			return $.extend(true, {}, gridOptions, {
+				url: '@Url.Action("WeiXinUserList", "Expert")'
+			});
+		}
+
+		$(function () {
+
+			var grid = $('#bootgrid');
+			grid.bootgrid(getGridOptions())
+			.on('loaded.rs.jquery.bootgrid', function () {
+
+				// edit
+				grid.find('.btn-binding').on('click', function (e) {
+					var id = $(this).parent().data('rowId');
+					var $proxy = $('#modelProxy');
+					$proxy
+						.data('url', '@Url.Action("Bind", "Expert")?id=' + id)
+                        .trigger('click');
+
+});
+
+				grid.find('.btn-unbind').on('click', function (e) {
+					var url = $(this).parent().data('url');
+					$.post(url, function (data) {
+						$('#bootgrid').bootgrid('reload');
+					});
+				});
+
+			});
+
+
+			$('#wx_bootgrid').bootgrid(getWeiXinUserGridOptions());
+
+			$('.actions').hide();
+		});
+
+	</script>
+}

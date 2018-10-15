@@ -1,0 +1,67 @@
+﻿
+@{
+	ViewBag.Title = "检索分类";
+	var categoryId = Request["categoryId"];
+	var searchType = Request["searchType"];
+}
+
+<style>
+   .grid-img{width:74px; height:74px;}
+   .grid-label {color: #FFF;padding-top: 20px;height: 100%; font-size:15px;}
+</style>
+
+<div id="sliderPage" data-role="slider" class="full" >
+
+	<div class="scroller">
+
+		<div id="page1" class="slide page" data-role="page" data-scroll="verticle">
+            
+            <div class="scroller">
+
+                <div class="grid listitem" data-col="3">
+
+                </div>
+
+            </div>
+		
+
+		</div>
+
+	</div>
+</div>
+@section Scripts{
+	<script>
+        $(function () {
+
+            var index = 0,length=defaultColors.length;
+            var templateFactory = function (o) {
+                index++;
+                return '<div class="grid-cell" data-url="' + o.LinkUrl + '"><div class="grid-img" style="background-color:' + defaultColors[index % length] + ';"><label class="grid-label">' + o.ItemName + '</label></div></div>'
+            };
+
+            $('.page').on('scrollInit', function () {
+                var $container = $(this),
+
+                ldr = new loader(location.href, 0, '@searchType', null,'@categoryId');
+
+                //懒加载，当列表滚动条到底部时加载数据
+                var s = A.Scroll(this);
+                s.on('scrollBottom', function () {
+                    A.showToast('努力加载中...');
+                    ldr.loadAsync(function (data) {
+                        bind($container, data, true, templateFactory);
+                        s.refresh(); //如果scroll区域dom有改变，需要刷新一下此区域，
+                    });
+                });
+
+                //每个页面默认加载数据
+                ldr.loadAsync(function (data) {
+                    bind($container, data, false, templateFactory);
+                    s.refresh();
+                });
+
+            });
+
+        });
+	</script>
+}

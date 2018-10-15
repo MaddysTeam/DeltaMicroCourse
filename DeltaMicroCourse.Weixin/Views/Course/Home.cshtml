@@ -1,0 +1,103 @@
+﻿
+@{
+	ViewBag.Title = "长三角微课程";
+	var noticeList = ViewBag.Notices as List<Notice>;
+	var isExpert = ViewBag.IsExpert == true;
+}
+<style>
+	ul li{ border:0px;}
+	.home .listitem li .iconfont{color:white}
+	.home #a1 {position: relative;z-index: 100;width: 100%;height: 200px;}
+	.home .title{text-align:center; font-size:15px;}
+</style>
+<div id="sliderPage" data-role="slider" class="full home">
+	<div id="page" class="slide page" data-scroll="verticle">
+		<div class="scroller">
+			
+			<div class="center" style="width:300px; margin-left:10%;   margin-top:20px;z-index:9999">
+				<input id="courseName" type="text" placeholder="搜索：视频关键字" style="height:42px;"><button class="btn-search" style="background:gray;"><i class="iconfont iconline-search"></i></button>
+			</div>
+
+			<div class="center" id="a1" style="width:90%; margin-top:80px;"></div>
+
+			<div class="grid" data-col="@(isExpert?4:3)" style="margin-top:20px;">
+
+				<a href="@Url.Action("List","Course")">
+					<div class="grid-cell">
+						<div class="grid-img" style="background-color:#f58220; border-radius:50%;">
+							<i class="iconfont iconline-file"></i>
+						</div>
+						<div><label class="grid-label">获奖视频</label></div>
+					</div>
+				</a>
+
+				<a href="@Url.Action("CategoryList","Course")">
+					<div class="grid-cell">
+						<div class="grid-img" style="background-color:#6a6da9; border-radius:50%">
+							<i class="iconfont iconline-search"></i>
+						</div>
+						<div><label class="grid-label">分类检索</label></div>
+					</div>
+				</a>
+
+				<a href="@Url.Action("FavoriteList","Course")">
+					<div class="grid-cell">
+						<div class="grid-img" style="background-color:#525f42; border-radius:50%">
+							<i class="iconfont iconline-favourite"></i>
+						</div>
+						<div><label class="grid-label">我的收藏</label></div>
+					</div>
+				</a>
+
+				@if (isExpert)
+				{
+					<a href="#">
+						<div class="grid-cell">
+							<div class="grid-img" style="background-color:#525f42; border-radius:50%">
+								<i class="iconfont iconline-record"></i>
+							</div>
+							<div><label class="grid-label">专家评审</label></div>
+						</div>
+					</a>
+				}
+
+			</div>
+
+			<ul class="listitem" style="list-style:decimal">
+				<li class="">
+					<label class="title"><i class="iconfont iconline-fav-checked favorite" style="color:#F49123"></i>消息中心</label>
+				</li>
+				@foreach (var itme in noticeList)
+				{
+					<li>
+						<a href="@Url.Action("Details","Notice",new {noticeId= itme.NoticeId })">@itme.Title</a>
+						<span class="right" style="font-size:10px; color:lightgray;">@itme.PublishDate</span>
+					</li>
+				}
+			
+			</ul>
+
+		</div>
+	</div>
+</div>
+@section Scripts{
+	<script>
+		$(function () {
+			$('footer').hide();
+
+			$('.btn-search').on(A.options.clickEvent, function () {
+				searchTerm = $('#courseName').val();
+				location.href = '@Url.Action("Search")?searchTerm='+searchTerm;
+			});
+
+		});
+	</script>
+
+
+	<script type="text/javascript" src="~/Assets/js/ckplayer.js" charset="utf-8"></script>
+	<script>
+        var videoPath = 'http://weikecheng.yrdedu.cn/files/videos/20141030/201410301423123_294.mp4';
+		videoPlay(CKobject, 'a1', '../Assets/plugins/ckplayer6.8/ckplayer/ckplayer.swf', null, videoPath);
+	</script>
+
+}

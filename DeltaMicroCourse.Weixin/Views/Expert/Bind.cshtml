@@ -1,0 +1,56 @@
+﻿@model WeiXinExpert
+
+<div style="width:60%; margin-top:100px; border:1px solid #eee;" class="center-block">
+	<div class="row">
+		<form role="form" class="form-horizontal binding-form" action="@Url.Action("Bind", "Expert")">
+
+		<div class="row">
+			<fieldset class="col-sm-12"  style="background:white; padding:20px; min-width:500px;">
+			<div class="form-group">
+			@Html.LabelFor(e => e.UserName, new { @class = "control-label col-md-3" })
+			<div class="col-md-9">
+			<span class="form-control">@Model.UserName</span>
+			</div>
+			</div>
+			<div class="form-group">
+			@Html.LabelFor(e => e.OpenId, new { @class = "control-label col-md-3" })
+			<div class="col-md-9">
+			@Html.TextBoxFor(e => e.OpenId, new { @class = "form-control" })
+			</div>
+			</div>
+			<div class="form-group">
+			<div class="col-md-offset-3 col-md-9">
+			<button type="submit" class="btn btn-primary btn-block-half btn-submit col-md-6"><i class="fa fa-check-circle"></i> 绑定</button>
+			<button type="button" class="btn btn-default btn-block-half col-md-6" data-dismiss="modal">取消</button>
+			</div>
+			@*<button type="submit" class="btn btn-primary btn-block-half btn-submit col-md-offset-3 col-md-4"><i class="fa fa-check-circle"></i> 绑定</button>
+				<button type="button" class="btn btn-default btn-block-half col-md-4" data-dismiss="modal">取消</button>*@
+			</div>
+
+			@Html.HiddenFor(x => x.UserId)
+			</fieldset>
+		</div>
+
+		</form>
+
+	</div>
+</div>
+<script>
+	$(function () {
+
+		var $form = $('.binding-form');
+
+		$form.submit(function () {
+
+			var $form = $(this);
+
+			$.post($form.attr('action'), $form.serialize(), function (data, status) {
+				$('#firstModal').modal('hide');
+				$('#bootgrid').bootgrid('reload');
+			});
+
+			return false;
+		});
+
+	});
+</script>

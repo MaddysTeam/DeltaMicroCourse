@@ -1,0 +1,75 @@
+﻿@model PCAccount
+@{
+    ViewBag.Title = "WeiXinBind";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@section Css{
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+}
+
+
+<h2>绑定专家号</h2>
+
+<div id="sliderPage" data-role="slider" class="full">
+
+	<div id="page" class="slide page" data-scroll="verticle">
+
+		<div class="scroller">
+
+			<div class="grid" data-col="3">
+
+				<form class="form-common" action="@Url.Action("WeiXinBind","Expert")" id="form_binding" role="form">
+					<div class="form-group">
+						@Html.LabelFor(x=>x.UserName)
+						@Html.TextBoxFor(x=>x.UserName,new { @class="form-control",@placeholder = "请输入账号" })
+						@Html.ValidationMessageFor(x => x.UserName)
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(x => x.Password)
+						@Html.PasswordFor(x => x.Password, new { @class = "form-control", @placeholder = "请输入密码" })
+						@Html.ValidationMessageFor(x=>x.Password)
+					</div>
+
+					<div class="form-group">
+					<button class="btn" type="submit">绑定</button>
+					<a class="btn" href="@Url.Action("Home","Course")">返回微课程首页</a>
+					</div>
+				</form>
+				
+				<div class="clearfix"></div>
+			</div>
+
+
+		</div>
+
+	</div>
+</div>
+
+@section Scripts{ 
+<script src="~/assets/js/jquery.validate.min.js"></script>
+<script src="~/assets/js/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+	function ajaxSubmitForm(form, cb) {
+		$.validator.unobtrusive.parse(form);
+
+		form.submit(function (e) {
+			e.preventDefault();
+
+			var $this = $(this);
+			$this.valid() && $.post($this.attr('action'), $this.serialize(), function (data, status) {
+				if (cb && typeof cb == 'function')
+					cb(data, status);
+			});
+		});
+	}
+
+
+	$(function () {
+		ajaxSubmitForm($('#form_binding'), function (data, status) {
+			alert(data.msg);
+		});
+	});
+</script>
+
+}

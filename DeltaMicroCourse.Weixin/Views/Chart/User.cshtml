@@ -1,0 +1,72 @@
+﻿@{
+	ViewBag.Title = "用户统计";
+	Layout = "~/Views/Shared/_ReportLayout.cshtml";
+	
+}
+
+<div class="rows">
+	<div class="col-md-12 text-center"><h2>@ViewBag.Title</h2></div>
+	</div>
+	<div class="col-md-12 center-block"  >
+		<div class="text-center"><h2>用户总人数</h2></div>
+		<div class="flot-chart center-block" id="usersCount" style="height:350px; width:350px;"></div>
+	</div>
+	<div class="col-md-12 center-block">
+		<div class="text-center"><h2>网页用户地区分布</h2></div>
+		<div class="flot-chart center-block" id="pcUserRegionCount" style="height:350px; width:350px;"></div>
+	</div>
+	<div class="col-md-12 center-block">
+		<div class="text-center"><h2>微信用户地区分布</h2></div>
+		<div class="flot-chart center-block" id="weiXinUserRegionCount" style="height:350px; width:350px;"></div>
+	</div>
+	<div class="col-md-12 center-block">
+		<div class="text-center"><h2>微信用户性别比例</h2></div>
+		<div class="flot-chart center-block" id="weiXinUserGenderCount" style="height:350px; width:350px;"></div>
+	</div>
+
+
+@section Scripts{
+	<script>
+		var ajaxSuccess = '@AjaxResults.Success'
+
+		$.post('@Url.Action("UserCount", "Chart")', function (data) {
+
+			if (data.result == ajaxSuccess) {
+				PieChart('#usersCount', data.data);
+			} else {
+				alert('failure');
+			}
+
+		});
+
+		$.post('@Url.Action("PCUserRegionCount", "Chart")', function (data) {
+
+			if (data.result == ajaxSuccess) {
+				bindBarChart('#pcUserRegionCount', data);
+			} else {
+				alert('failure');
+			}
+
+		});
+
+		$.post('@Url.Action("WeiXinUserRegionCount", "Chart")', function (data) {
+
+			if (data.result == ajaxSuccess) {
+				bindBarChart('#weiXinUserRegionCount', data);
+			} else {
+				alert('failure');
+			}
+
+		});
+
+		$.post('@Url.Action("WeiXinUserGenderCount", "Chart")', function (data) {
+
+			if (data.result == ajaxSuccess) {
+				PieChart('#weiXinUserGenderCount', data.data);
+			} else {
+				alert('failure');
+			}
+
+		});
+	</script>
+	}

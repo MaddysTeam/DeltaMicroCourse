@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "获奖视频";
+}
+
+@section MenuArea{
+    <ul class="slidebar">
+        <li class="tab active" id="tab2" data-role="tab" href="#page1" data-toggle="page">
+            <label class="tab-label">最热排行榜</label>
+        </li>
+        <li class="tab" id="tab3" data-role="tab" href="#page2" data-toggle="page">
+            <label class="tab-label">得票排行榜</label>
+        </li>
+        <li class="tab" id="tab3" data-role="tab" href="#page3" data-toggle="page">
+            <label class="tab-label">地区-最新微课</label>
+        </li>
+    </ul>
+}
+
+<div id="sliderPage" data-role="slider" class="full" style="margin-top:45px;">
+   
+    <div class="scroller">
+
+        <div id="page1" class="slide page" data-role="page" data-scroll="verticle">
+         
+            <div class="scroller">
+                <ul class="listitem"></ul>
+            </div>
+
+        </div>
+        <div id="page2" class="slide page" data-role="page" data-scroll="verticle">
+            <div class="scroller">
+                <ul class="listitem"></ul>
+            </div>
+        </div>
+        <div id="page3" class="slide page" data-role="page" data-scroll="verticle">
+            <form class="form-group">
+                <div class="card" data-role="select">
+                    <select placeholder="选择公司">
+                        <option value="1181">江苏</option>
+                        <option value="1312">浙江</option>
+                        <option value="1161">上海</option>
+                        <option value="1425">安徽</option>
+                    </select>
+                </div>
+
+                <div class="scroller" id="scroller">
+                    <ul class="listitem"></ul>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+
+        $(function () {
+
+            var url = '@Url.Action("Search")';
+            var dropdown = $('#page3').find('select');
+            var searchTypes = { page1: 0, page2: 1, page3: 2 };  // listType 为0,1,2
+
+            //初始化list 滚动条事件
+            $('.page').on('scrollInit', function () {
+                var page = this,
+				      pageId = $(page).attr('id'),
+				      searchType = searchTypes[pageId],//根据pageId获取searchType
+                  searchTerm= dropdown.val(),
+                  ldr = new loader(url, 0, searchType, searchTerm);
+
+                //懒加载，当列表滚动条到底部时加载数据
+                var s = A.Scroll(this);
+                s.on('scrollBottom', function () {
+                    A.showToast('努力加载中...');
+                    ldr.loadAsync(function (data) {
+                        bind(page, data, true);
+                        s.refresh(); //如果scroll区域dom有改变，需要刷新一下此区域
+                    });
+                });
+
+                //每个页面默认加载数据
+                ldr.loadAsync(function (data) {
+                    var isLazy = pageId != "page1";
+                    bind(page, data, isLazy);
+                    s.refresh();
+                });
+
+                //如果当前页面是page3 则绑定省市下拉框事件
+                if (pageId == "page3") {
+                    dropdown.change(function () {
+                        var ldr = new loader(url, 0, 2, $(this).val());
+                        ldr.loadAsync(function (data) {
+                            clear(page);
+                            bind(page, data);
+                            s.refresh();
+                        });
+                    });
+                }
+
+            });
+
+        });
+
+    </script>
+}

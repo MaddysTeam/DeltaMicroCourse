@@ -1,0 +1,40 @@
+﻿@model List<CategoryModel>
+@{
+	ViewBag.Title = "分类检索";
+}
+<style>
+	.grid-img {width: 74px;height: 74px;}
+	.grid-label {color: #FFF;padding-top: 20px;height: 100%;font-size: 15px;}
+</style>
+<div id="sliderPage" data-role="slider" class="full">
+
+	<div id="page" class="slide page" data-scroll="verticle">
+
+		<div class="scroller">
+
+			<!--搜索框-->
+			<!--分类-->
+			<div class="grid" data-col="3">
+				@{  var colors = new string[] { "#3498db", "#F39C12", "#1abc9c", "#e74c3c", "#78ba00", "#8e44ad" };
+					var i = 0;
+					foreach (var item in Model)
+					{
+						<a href="@item.LinkUrl">
+							<div class="grid-cell">
+								<div class="grid-img" style="background-color:@colors[i % (colors.Length-1)];">
+									<label class="grid-label" style="color:white;">@item.Name</label>
+								</div>
+							</div>
+						</a>
+						i++;
+					}
+				}
+				<div class="clearfix"></div>
+			</div>
+
+
+		</div>
+
+	</div>
+</div>
+

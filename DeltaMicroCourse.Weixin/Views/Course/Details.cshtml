@@ -1,0 +1,250 @@
+﻿@model  TheSite.Models.CourseDetailsViewModel
+@{
+	ViewBag.Title = Model.CourseInfo.Name;
+}
+
+<style type="text/css">
+	#a1 {
+		position: relative;
+		z-index: 100;
+		width: 100%;
+		height: 200px;
+	}
+
+	/*  scroll */
+	#wrapper1 {
+		height: 100px;
+		width: 100%;
+		background: #FFFFF0;
+		overflow: hidden;
+		position: relative;
+	}
+
+	#scroller {
+		/*position: absolute;*/
+		z-index: 1;
+		-webkit-tap-highlight-color: rgba(0,0,0,0);
+		width: 900px;
+		height: 100%;
+		-webkit-transform: translateZ(0);
+		-moz-transform: translateZ(0);
+		-ms-transform: translateZ(0);
+		-o-transform: translateZ(0);
+		transform: translateZ(0);
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		-webkit-text-size-adjust: none;
+		-moz-text-size-adjust: none;
+		-ms-text-size-adjust: none;
+		-o-text-size-adjust: none;
+		text-size-adjust: none;
+	}
+
+		#scroller ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+		}
+
+		#scroller ul li {
+			display: block;
+			float: left;
+			width: 150px;
+			height: 100%;
+			border-right: 1px solid #ccc;
+			background-color: #FFFFF0;
+			font-size: 14px;
+		}
+
+	  #scroller ul li img {
+				width: 130px;
+				height: 100px;
+			}
+	/*  scroll end */
+	.listitem li small {
+		display: inline-block;
+	}
+	.favorite{font-size:20px;}
+
+	#article {top:0px;}
+</style>
+
+<div id="sliderPage" data-role="slider" class="full">
+
+		<div id="page" class="slide page" data-scroll="verticle">
+
+			<div class="scroller">
+
+				<div id="a1"></div>
+
+				<div id="comment">
+					<ul class="listitem">
+						<li class="courseItem">
+							<div class="text">
+								<span class="addressName"><i class="iconfont iconline-media-play"></i> <small>@(Model.CourseInfo.PlayCount + "次播放")</small></span>
+								<i class="right iconfont iconline-fav-checked favorite" ><font size="2" class="favoriteLabel">收藏</font></i>
+							</div>
+						</li>
+
+					</ul>
+					<button class="block submit praise">点赞 <i class="iconfont iconline-like"></i> <small class="praiseNum">@Model.CourseInfo.PraiseCount</small></button>
+					<input type="hidden" class="praiseVal" value="@Model.CourseInfo.PraiseCount" />
+				</div>
+
+				<div>
+					<ul class="listitem">
+						<li class="courseItem" >
+							<div class="text">
+								相关微课程视频
+							</div>
+						</li>
+
+					</ul>
+				</div>
+
+				<div id="wrapper1">
+					<div id="scroller">
+
+						<ul class="videoList"></ul>
+
+					</div>
+				</div>
+
+				<div>
+					<ul class="listitem">
+						<li>
+
+						</li>
+						<li href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">项目名称</label>
+								<label class="right"><small>2014长三角微课教学评</small></label>
+							</div>
+						</li>
+						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">作品名称</label>
+								<label class="right"><small>@Model.CourseInfo.Name</small></label>
+							</div>
+						</li>
+						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">学科</label>
+								<label class="right"><small>@Model.CourseInfo.SubjectName</small></label>
+							</div>
+						</li>
+						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">年级</label>
+								<label class="right"><small>@Model.CourseInfo.GradeName</small></label>
+							</div>
+						</li>
+						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">作者</label>
+								<label class="right"><small>@Model.CourseInfo.TeacherName</small></label>
+							</div>
+						</li>
+						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">所在学校</label>
+								<label class="right"><small>@Model.CourseInfo.SchoolName</small></label>
+							</div>
+						</li>
+						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">创建日期</label>
+								<label class="right"><small>@Model.CourseInfo.CreateDate</small></label>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+		@section Scripts{
+			<script type="text/javascript" src="~/Assets/js/ckplayer.js" charset="utf-8"></script>
+			<script type="text/javascript">
+				var myScroll = new IScroll('#wrapper1', { scrollX: true, scrollY: false, mouseWheel: true });
+
+				$(function () {
+
+					// 其他视频列表
+					$.post('@Url.Action("Details")', { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+						var itemString = '';
+						$(data.items).each(function () {
+							itemString += new courseItem(this).getTemplate('<li data-url="' + this.LinkUrl + '"><img src="' + this.ImagePath + '" /></li>');
+						});
+
+						var items = $(itemString);
+						items.appendTo($('.videoList'));
+						items.on(A.options.clickEvent, function (e) {
+							location.href = $(this).attr('data-url');
+						});
+					});
+
+					//收藏按钮点击事件
+					var isFavorite = '@Model.CourseInfo.IsFavorite' == 'True' ? true : false;
+					$('.favorite').on(A.options.clickEvent, function () {
+						isFavorite = !isFavorite;
+						var $this = $(this), url = isFavorite ? '@Url.Action("FavoriteVideo")' : '@Url.Action("CancelFavorite")';
+						$.post(url, { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+							if (data.isSuccess == true) {
+								$this.css('color', isFavorite ? '#F49123' : '#AAAAAA');
+								A.showToast(isFavorite ? '收藏成功! :)' : '取消收藏!');
+							} else {
+								A.showToast('操作失败，请联系管理员 :)')
+							}
+						});
+						return false;
+					})
+				   .css('color', isFavorite ? '#F49123' : '#AAAAAA');
+				 
+
+					//绑定点赞按钮事件
+					var praiseBtn = $('.praise').on(A.options.clickEvent, function (e) {
+						$.post('@Url.Action("PraiseVideo")', { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+							if (data.isSuccess == true) {
+								A.showToast('点赞成功! :)')
+								var praiseVal = parseInt($('.praiseVal').val());
+								$('.praiseVal').val(praiseVal++);
+								praiseBtn.find('.praiseNum').html(praiseVal);
+
+							} else {
+								A.showToast('不能重复点赞 :)')
+							}
+
+						});
+
+					});
+				});
+
+
+
+			</script>
+
+			<script type="text/javascript">
+
+				var playfunc = function () {
+					$.post('@Url.Action("PlayVideo")', { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+						if (data.isSuccess == true) {
+							A.showToast('播放成功! :)')
+						} else {
+							A.showToast('播放记录失败 :)')
+						}
+
+					});
+				}
+				var videoPath = '@Model.CourseInfo.VideoPath';
+				videoPlay(CKobject, 'a1', '../Assets/plugins/ckplayer6.8/ckplayer/ckplayer.swf', playfunc, videoPath);
+
+			</script>
+		}

@@ -1,0 +1,65 @@
+﻿@model TheSite.Models.SearchOption
+
+<div class="center" style="width:300px; margin-left:10%;  margin-top:1px;z-index:9999">
+	@if (@StaticKeys.Categories.ContainsKey(Model.CategoryId))
+	{
+		<input id="courseName" type="text" placeholder="搜索：@StaticKeys.Categories[Model.CategoryId]" style="height:40px;"><button class="btn-search"><i class="iconfont iconline-search"></i></button>
+	}
+	else
+	{
+		<input id="courseName" type="text" placeholder="搜索微课程" style="height:40px;"><button class="btn-search"><i class="iconfont iconline-search"></i></button>
+	}
+</div>
+<div id="sliderPage" data-role="slider" class="full">
+	<div id="page1" class="slide page" data-role="page" data-scroll="verticle">
+
+		<div class="scroller">
+			<ul class="listitem"></ul>
+		</div>
+
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+		$(function () {
+
+			var url = '@Url.Action("Search")',
+				 searchType = '@Model.SearchType',
+				 categoryItemId = '@Model.CategoryItemId',
+				 searchTerm = '@Model.SearchTerm';
+
+			$('.page').on('scrollInit', function () {
+				var page = this,
+						ldr = new loader(url, 0, searchType, searchTerm, categoryItemId);
+
+				//懒加载，当列表滚动条到底部时加载数据
+				var s = A.Scroll(this);
+				s.on('scrollBottom', function () {
+					A.showToast('努力加载中...');
+					ldr.loadAsync(function (data) {
+						bind(page, data, true);
+						s.refresh(); //如果scroll区域dom有改变，需要刷新一下此区域，
+					});
+				});
+
+				//每个页面默认加载数据
+				ldr.loadAsync(function (data) {
+					bind(page, data, false);
+					s.refresh();
+				});
+
+				$('.btn-search').on(A.options.clickEvent, function () {
+					searchTerm = $('#courseName').val();
+					ldr = new loader(url, 0, searchType, searchTerm, categoryItemId);
+					ldr.loadAsync(function (data) {
+						clear(page);
+						bind(page, data, false);
+						s.refresh();
+					});
+				});
+			});
+
+		});
+	</script>
+}

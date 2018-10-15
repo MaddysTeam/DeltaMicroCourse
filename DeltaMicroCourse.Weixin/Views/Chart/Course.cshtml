@@ -1,0 +1,268 @@
+﻿@{
+	ViewBag.Title = "微课程统计";
+	Layout = "~/Views/Shared/_ReportLayout.cshtml";
+	var category = Request["category"]?? "region";
+}
+
+<style>
+	ul, li {
+		padding: 0px;
+		margin: 0px;
+	}
+
+	ul, menu, dir {
+		display: inline-block;
+		list-style-type: none;
+		margin-top: 20px;
+	}
+
+	.navigation li {
+		margin-left: 3px;
+		margin-bottom: 3px;
+		display: block;
+		float: left;
+		line-height: 20px;
+	}
+
+	li a {
+		color: #08c;
+		outline: none !important;
+		text-decoration: none;
+		color: #fff;
+		font-family: 'Segoe UI';
+		padding-top: 15px;
+	}
+
+	.button {
+		width: 70px;
+		height: 70px;
+		display: block;
+		padding: 5px;
+		text-decoration: none;
+		position: relative;
+	}
+	.flot-chart{
+		height:300px; 
+		width:300px;
+	}
+</style>
+
+@*<div class="rows" >
+	<div class="col-md-12 text-center">
+		<div class="metroHeaders">
+			<ul class="navigation">
+				<li><a href="#" class="button" data-name="region" style="background:#009AD7 !important">地区</a></li>
+				<li><a href="#" class="button" data-name="subject" style="background:#FFAA31 !important">学科</a></li>
+				<li><a href="#" class="button" data-name="grade" style="background:#68AF27 !important">年级</a></li>
+				<li><a href="#" class="button" data-name="play" style="background:#C22439 !important">播放</a></li>
+				<li><a href="#" class="button" data-name="praise" style="background:#ff5b57 !important">点赞</a></li>
+			</ul>
+		</div>
+	</div>
+
+</div>*@
+
+<div class="rows chartArea region" >
+	<div class="col-md-12 center-block">
+		<div calss="text-center" style="text-align:center;"><h2>微课程按地区统计</h2></div>
+		<div class="flot-chart center-block" id="courseRegionCount"></div>
+	</div>
+	<div class="col-md-12 center-block">
+		<div calss="text-center" style="text-align:center;"><h2>上海市</h2></div>
+		<div class="flot-chart center-block" id="courseCityRegionCount1" ></div>
+	</div>
+	<div class="col-md-12 center-block">
+		<div calss="text-center" style="text-align:center;"><h2>浙江省</h2></div>
+		<div class="flot-chart center-block" id="courseCityRegionCount2" ></div>
+	</div>
+	<div class="col-md-12 center-block">
+		<div calss="text-center" style="text-align:center;"><h2>安徽省</h2></div>
+		<div class="flot-chart center-block" id="courseCityRegionCount3" ></div>
+	</div>
+	<div class="col-md-12 center-block">
+		<div calss="text-center" style="text-align:center;"><h2>江苏省</h2></div>
+		<div class="flot-chart center-block" id="courseCityRegionCount4" ></div>
+	</div>
+</div>
+
+<div class="rows chartArea subject hidden">
+	<div class="col-md-12">
+		<div calss="text-center" style="text-align:center;"><h2>微课程按学科统计</h2></div>
+		<div class="flot-chart center-block" id="coursePlayCount"></div>
+	</div>
+	<div class="col-md-12">
+		<div class="flot-chart center-block" id="courseSubjectCount" style="height:500px; width:500px;" ></div>
+	</div>
+</div>
+
+<div class="rows chartArea grade hidden" >
+	<div class="col-md-12">
+		<div calss="text-center" style="text-align:center;"><h2>微课程按年级统计</h2></div>
+	</div>
+	<div class="col-md-12">
+		<div class="flot-chart center-block" id="courseGradeCount" style="height:500px; width:500px;"></div>
+	</div>
+</div>
+
+<div class="rows chartArea play hidden" >
+	<div class="col-md-12">
+		<div calss="text-center" style="text-align:center;"><h2>网页端播放量前10位</h2></div>
+		<div class="flot-chart center-block" id="top10PCCoursePlayCount" style="height:400px; width:400px;" ></div>
+	</div>
+	<div class="col-md-12">
+		<div calss="text-center" style="text-align:center;"><h2>微信端播放量前10位</h2></div>
+		<div class="flot-chart center-block" id="top10WeiXinCoursePlayCount"  style="height:350px; width:350px;"></div>
+	</div>
+</div>
+
+<div class="rows chartArea praise hidden" >
+	<div class="col-md-12">
+		<div calss="text-center" style="text-align:center;"><h2>网页端点赞量前10位</h2></div>
+		<div class="flot-chart center-block" id="top10PCCoursePraiseCount" style="height:400px; width:400px;"></div>
+	</div>
+	<div class="col-md-12">
+		<div calss="text-center" style="text-align:center;"><h2>微信端点赞量前10位</h2></div>
+		<div class="flot-chart center-block" id="top10WeiXinCoursePraiseCount"  style="height:350px; width:350px;"></div>
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+		$(function () {
+			$('.chartArea').hide();
+			$('.' + '@category').removeClass('hidden').show()
+
+			var ajaxSuccess = '@AjaxResults.Success'
+
+			$.post('@Url.Action("CourseRegionCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					PieChart('#courseRegionCount', data.data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("CourseCityRegionCount", "Chart",new { provinceId= 1161 })', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindBarChart('#courseCityRegionCount1', data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("CourseCityRegionCount", "Chart", new { provinceId = 1312 })', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindBarChart('#courseCityRegionCount2', data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("CourseCityRegionCount", "Chart", new { provinceId = 1425 })', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindBarChart('#courseCityRegionCount3', data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("CourseCityRegionCount", "Chart", new { provinceId = 1181 })', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindBarChart('#courseCityRegionCount4', data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("CourseSubjectCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindHorizontalBar('#courseSubjectCount', data);
+				} else {
+					alert('failure');
+				}
+			});
+
+			$.post('@Url.Action("CourseGradeCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindHorizontalBar('#courseGradeCount', data);
+				} else {
+					alert('failure');
+				}
+			});
+
+
+			$.post('@Url.Action("CoursePlayCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					PieChart('#coursePlayCount', data.data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("CoursePraiseCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					PieChart('#coursePraiseCount', data.data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("Top10PCCoursePlayCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindHorizontalBar('#top10PCCoursePlayCount', data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("Top10WeiXinCoursePlayCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindHorizontalBar('#top10WeiXinCoursePlayCount', data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("Top10PCCoursePraiseCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					bindHorizontalBar('#top10PCCoursePraiseCount', data);
+				} else {
+					alert('failure');
+				}
+
+			});
+
+			$.post('@Url.Action("Top10WeiXinCoursePraiseCount", "Chart")', function (data) {
+
+				if (data.result == ajaxSuccess) {
+					PieChart('#top10WeiXinCoursePraiseCount', data.data);
+				} else {
+					alert('failure');
+				}
+
+			});
+		});
+
+	</script>
+}
