@@ -93,7 +93,7 @@ namespace TheSite.Controllers
 
       // GET:  Course/List
 
-      [OAuth]
+     // [OAuth]
       public ActionResult List()
       {
          return View();
@@ -174,7 +174,7 @@ namespace TheSite.Controllers
       // GET:  Course/Search
       // POST-Ajax:  Course/Search
 
-      [OAuth]
+     // [OAuth]
       public ActionResult Search(SearchOption option)
       {
          return View(option);
@@ -188,34 +188,26 @@ namespace TheSite.Controllers
 
          option.CurrentOpenId = OpenId;
 
-         //var query = APQuery.select(ci.Name, ci.SchoolName, ci.PlayCount, ci.PraiseCount, ci.VideoId, ci.GradeId,
-         //                                    ci.TeacherName, ci.CreateDate, cim.PicName, wp.PariseNum, wxpv.WeiXinPlayCount.As("playCount"), wxf.OpenId)
-         //                     .from(ci,
-         //                     cim.JoinLeft(cim.VideoId == ci.VideoId),
-         //                     wp.JoinLeft(wp.WksId == ci.VideoId),// 关联获取微信点赞数量
-         //                               wxpv.JoinLeft(wxpv.WksId == ci.VideoId),
-         //                        wxf.JoinLeft(wxf.WksId == ci.VideoId & wxf.OpenId == OpenId)
-         //             ).where(ci.PrizeType > 0);
-
-
-         var query = APQuery.select(cr.CrosourceId, cr.Title, cr.Author, cr.FavoriteCount, cr.ProvinceId, cr.AreaId, cr.CompanyId,
-            cr.AuthorCompany, cr.Description, cr.CreatedTime, rc.Path,//cr.ViewCount, cr.CommentCount, cr.DownCount //cr.FileExtName
-            mc.CourseId, mc.CourseTitle, mc.PlayCount, cf.FilePath
+         var query = APQuery.select(cr.CrosourceId, cr.Title, cr.Author, cr.FavoriteCount, cr.ProvinceId, cr.AreaId, cr.PraiseCount,
+            cr.AuthorCompany, cr.Description, cr.CreatedTime,//cr.ViewCount, cr.CommentCount, cr.DownCount //cr.FileExtName
+            mc.CourseId, mc.CourseTitle, mc.PlayCount, cf.FilePath,rc.CompanyName
             )
             .from(cr,
                   mc.JoinInner(mc.ResourceId == cr.CrosourceId),
                   rc.JoinInner(rc.CompanyId == cr.CompanyId),
-                  cf.JoinLeft(cf.FileId == mc.CoverId)
+                  cf.JoinLeft(cf.FileId == mc.CoverId),
+                  wxf.JoinLeft(wxf.ResId == cr.CrosourceId & wxf.OpenId == OpenId),
+                  wxp.JoinLeft(wxp.ResourceId == cr.CrosourceId)
                   //a.JoinInner(a.ActiveId==cr.ActiveId)
                   )
             .where(cr.StatePKID == CroResourceHelper.StateAllow & cr.PublicStatePKID == CroResourceHelper.Public) // 审核通过和公开的作品
             .order_by(cr.ActiveId.Desc)
             .primary(cr.CrosourceId);
 
-         //if (HandleManager.SearchHandlers.ContainsKey(option.SearchType))
-         //{
-         //   HandleManager.SearchHandlers[option.SearchType].Handle(query, option);
-         //}
+         if (HandleManager.SearchHandlers.ContainsKey(option.SearchType))
+         {
+            HandleManager.SearchHandlers[option.SearchType].Handle(query, option);
+         }
 
          //获得查询的总数量
 
@@ -237,17 +229,17 @@ namespace TheSite.Controllers
 
          var result = query.query(db, r =>
          {
-            return new MicroCourse
+            return new CourseViewModel
             {
-               //ImagePath = string.Format("{0}/{1}", ThisApp.UploadFilePath, cim.PicName.GetValue(r)),
-               //Name = ci.Name.GetValue(r),
-               //TeacherName = ci.TeacherName.GetValue(r),
-               //PlayCount = ci.PlayCount.GetValue(r) + wxpv.WeiXinPlayCount.GetValue(r, "playCount"),
-               //PraiseCount = ci.PraiseCount.GetValue(r) + wp.PariseNum.GetValue(r),
-               //SchoolName = ci.SchoolName.GetValue(r),
-               //VideoId = ci.VideoId.GetValue(r),
-               //LinkUrl = Url.Action("Details", new { videoId = ci.VideoId.GetValue(r) }),
-               //CreateDate = DateTime.Now,
+               ImagePath = cf.FilePath.GetValue(r),
+               Name = mc.CourseTitle.GetValue(r),
+               TeacherName = cr.Author.GetValue(r),// ci.TeacherName.GetValue(r),
+               PlayCount = mc.PlayCount.GetValue(r),  //TODO:ci.PlayCount.GetValue(r) + wxpv.WeiXinPlayCount.GetValue(r, "playCount"),
+               PraiseCount =cr.PraiseCount.GetValue(r),//TODO: ci.PraiseCount.GetValue(r) + wp.PariseNum.GetValue(r),
+               SchoolName = rc.CompanyName.GetValue(r),
+               //VideoId = 0,
+               LinkUrl = Url.Action("Details", new { resId = cr.CrosourceId.GetValue(r) }),
+               CreateDate = DateTime.Now,
             };
          }).ToList();
 
@@ -264,9 +256,9 @@ namespace TheSite.Controllers
       // POST-Ajax:  Course/Details
 
       [OAuth]
-      public ActionResult Details(int? videoId)
+      public ActionResult Details(int? resId)
       {
-         if (videoId == null)
+         if (resId == null)
          {
             return RedirectToAction("List");
          }

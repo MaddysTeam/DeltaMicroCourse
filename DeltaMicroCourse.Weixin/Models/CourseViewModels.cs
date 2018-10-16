@@ -1,4 +1,5 @@
 ﻿using Business;
+using System;
 
 namespace TheSite.Models
 {
@@ -6,9 +7,26 @@ namespace TheSite.Models
 	public class CourseDetailsViewModel
 	{
 
-		public CourseInfo CourseInfo { get; set; }
+		//public CourseInfo CourseInfo { get; set; }
 
 	}
+
+
+   public class CourseViewModel
+   {
+      public string ImagePath { get; set; }
+      public string VideoPath { get; set; }
+      public string LinkUrl { get; set; }
+      public bool IsFavorite { get; set; }
+      public string Name { get; set; }
+      public string TeacherName { get; set; }
+      public int PlayCount { get; set; }
+      public int PraiseCount { get; set; }
+      public string SchoolName { get; set; }
+      public int VideoId { get; set; }
+      public DateTime CreateDate { get; set; }
+   }
+
 
 	public class SearchOption
 	{

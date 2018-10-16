@@ -170,7 +170,6 @@
     <Compile Include="Business\Cache\ThisAppCache.cs" />
     <Compile Include="Business\Project\ThisApp.cs" />
     <Compile Include="Business\DataDef\WeiXinExpert.cs" />
-    <Compile Include="Business\DataDef\CourseInfo.cs" />
     <Compile Include="Business\Handler\SearchHandler.cs" />
     <Compile Include="Business\Utils\StaticKeys.cs" />
     <Compile Include="Business\Project\Columns\PickListAPRptColumn.cs" />
