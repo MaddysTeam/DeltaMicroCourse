@@ -10,14 +10,11 @@ namespace Business
    public static class ActiveHelper
    {
 
-      public static PickListAPRptColumn Level;
-      public static PickListAPRptColumn Semester;
-
       static ActiveHelper()
       {
-         //Level = new PickListAPRptColumn(APDBDef.Active.LevelPKID, ThisApp.PLKey_ProjectLevel);
-         //Semester = new PickListAPRptColumn(APDBDef.Active.SemesterPKID, ThisApp.PLKey_SemesterType);
       }
+
+      public static List<Active> All => APBplDef.ActiveBpl.GetAll();
 
       // 项目级别
       public static long CountryLevel = 10217;

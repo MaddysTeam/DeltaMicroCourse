@@ -149,6 +149,16 @@ namespace Business
 
    }
 
+   public class CourseActiveSearchHandler : CourseSearchHandler
+   {
+
+      public override void Handle(APSqlSelectCommand query, SearchOption option)
+      {
+         query.where_and(cr.ActiveId == option.CategoryItemId);
+      }
+
+   }
+
 
 
    public static class HandleManager
@@ -165,6 +175,7 @@ namespace Business
              {SearchOptionType.School, new CourseSchoolNameSearchHandler() },
              {SearchOptionType.Grade, new CourseGradeNameSearchHandler() },
              {SearchOptionType.Author, new CourseAuthorNameSearchHandler() },
+             {SearchOptionType.Active, new CourseActiveSearchHandler() },
         };
 
    }

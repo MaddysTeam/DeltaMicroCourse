@@ -72,6 +72,9 @@ namespace TheSite.Models
 		//根据作者名字搜索
 		Author = 8,
 
+      //根据项目
+      Active = 9
+
 	}
 
 }

@@ -53,9 +53,6 @@ namespace TheSite.Controllers
       //[GetOpenId]
       public ActionResult Index()
       {
-         var dics = APBplDef.ResPickListItemBplBase.GetAll();
-         Business.Cache.ThisAppCache.SetCache(dics);
-
          var notExist = APBplDef.WeiXinUserInfoBpl.ConditionQuery(wxu.OpenId == OpenId, null, null, null).FirstOrDefault() == null;
          if (notExist)
          {
@@ -86,8 +83,7 @@ namespace TheSite.Controllers
 
          ViewBag.IsExpert = db.WeiXinExpertDal.ConditionQueryCount(wxe.OpenId == OpenId) > 0;
 
-
-         ViewBag.Notices = db.NoticeDal.ConditionQuery(null, null, null, null);
+         ViewBag.Notices = db.NoticeDal.ConditionQuery(null, null, null, null); //TODO: will replace
 
 
          return View();
@@ -105,7 +101,7 @@ namespace TheSite.Controllers
 
       // GET:  Course/FavoriteList
 
-      [OAuth]
+      //[OAuth]
       public ActionResult FavoriteList()
       {
          return View();
@@ -116,7 +112,7 @@ namespace TheSite.Controllers
       // GET:  Course/CategoryItemList
       // POST-Ajax:  Course/CategoryItemList  （暂时只有学科和年纪使用statickeys分类，其余的直接通过search搜索数据库）
 
-      [OAuth]
+      //[OAuth]
       public ActionResult CategoryList()
       {
          var items = StaticKeys.Categories
@@ -140,7 +136,7 @@ namespace TheSite.Controllers
          return View(items);
       }
 
-      [OAuth]
+      //[OAuth]
       public ActionResult CategoryItemList(int categoryId, int searchType)
       {
          return View();
@@ -201,8 +197,6 @@ namespace TheSite.Controllers
                                     mc.JoinInner(mc.ResourceId == cr.CrosourceId),
                                     rc.JoinInner(rc.CompanyId == cr.CompanyId),
                                     cf.JoinLeft(cf.FileId == mc.CoverId)
-                                    //wxf.JoinLeft(wxf.ResId == cr.CrosourceId & wxf.OpenId == OpenId),
-                                    //wxp.JoinLeft(wxp.ResourceId == cr.CrosourceId)
                                     //TODO:a.JoinInner(a.ActiveId==cr.ActiveId)
                                     )
             .where(cr.StatePKID == CroResourceHelper.StateAllow & cr.PublicStatePKID == CroResourceHelper.Public) // 审核通过和公开的作品
@@ -273,14 +267,6 @@ namespace TheSite.Controllers
          var vf = APDBDef.Files.As("Videos");
          var rc = APDBDef.ResCompany;
 
-         var dicCache = Business.Cache.ThisAppCache.GetCache<List<ResPickListItem>>();
-         if (dicCache == null)
-         {
-            var dics = APBplDef.ResPickListItemBplBase.GetAll();
-            Business.Cache.ThisAppCache.SetCache(dics);
-            dicCache = Business.Cache.ThisAppCache.GetCache<List<ResPickListItem>>();
-         }
-
          var courseViewModel = APQuery.select(mc.CourseId, mc.CourseTitle, mc.PlayCount, mc.WeiXinPlayCount,
                                               cr.CrosourceId, cr.Title, cr.PraiseCount,
                                               cr.CrosourceId, cr.WeiXInPraiseCount, cr.WeiXinFavoriteCount,
@@ -296,8 +282,8 @@ namespace TheSite.Controllers
                                           .where(cr.CrosourceId == resId & mc.CourseId == courseId)
                                           .query(db, r =>
                                           {
-                                             var grade = dicCache.Find(x => x.PickListItemId == cr.GradePKID.GetValue(r)).Name;
-                                             var subject = dicCache.Find(x => x.PickListItemId == cr.SubjectPKID.GetValue(r)).Name;
+                                             var grade = PickListHelper.GetName(cr.GradePKID.GetValue(r));  
+                                             var subject = PickListHelper.GetName(cr.SubjectPKID.GetValue(r)); 
                                              return new CourseViewModel
                                              {
                                                 ResId = cr.CrosourceId.GetValue(r),

@@ -10,7 +10,7 @@ namespace TheSite.Models
     public class CategoryModel
     {
 
-         public int Id { get; set; }
+         public long Id { get; set; }
          public string Name { get; set; }
          public string LinkUrl { get; set; }
          //public CategoryType Type { get; set; }
@@ -20,7 +20,7 @@ namespace TheSite.Models
 	public class CategoryItemModel
 	{
 
-		public int itemId { get; set;}
+		public long itemId { get; set;}
 		public string ItemName { get; set; }
 		public string LinkUrl { get; set; }
 

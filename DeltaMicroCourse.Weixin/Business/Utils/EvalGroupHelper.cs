@@ -6,11 +6,11 @@ namespace Business
 
    public static class EvalGroupHelper
    {
-      public static PickListAPRptColumn Level;
+     // public static PickListAPRptColumn Level;
 
       static EvalGroupHelper()
       {
-         Level = new PickListAPRptColumn(APDBDef.EvalGroup.LevelPKID, ThisApp.PLKey_Level);
+       //  Level = new PickListAPRptColumn(APDBDef.EvalGroup.LevelPKID, ThisApp.PLKey_Level);
       }
 
 

@@ -171,15 +171,14 @@
     <Compile Include="Business\Project\ThisApp.cs" />
     <Compile Include="Business\DataDef\WeiXinExpert.cs" />
     <Compile Include="Business\Handler\SearchHandler.cs" />
+    <Compile Include="Business\Utils\PickListHelper.cs" />
     <Compile Include="Business\Utils\StaticKeys.cs" />
-    <Compile Include="Business\Project\Columns\PickListAPRptColumn.cs" />
     <Compile Include="Business\Project\ThisApp.PickList.cs" />
     <Compile Include="Business\System.Web.MVC\AjaxResults.cs" />
     <Compile Include="Business\System.Web.MVC\Attribute\OAuthAttribute.cs" />
     <Compile Include="Business\Utils\ActiveHelper.cs" />
     <Compile Include="Business\Utils\CroResourceHelper.cs" />
     <Compile Include="Business\Utils\EvalGroupHelper.cs" />
-    <Compile Include="Business\Utils\FileHelper.cs" />
     <Compile Include="Business\Utils\IndicationHelper.cs" />
     <Compile Include="Business\Weixin\CustomMessageContext.cs" />
     <Compile Include="Business\Weixin\CustomMessageHandler.cs" />
@@ -202,6 +201,7 @@
     </Compile>
     <Compile Include="Models\CategoryModels.cs" />
     <Compile Include="Models\CourseViewModels.cs" />
+    <Compile Include="Models\ExpertModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -643,6 +643,7 @@
     <Folder Include="assets\img\" />
     <Folder Include="assets\sass\" />
     <Folder Include="Attachments\" />
+    <Folder Include="Business\Project\Columns\" />
     <Folder Include="Business\Weixin\Services\" />
     <Folder Include="Views\Utilties\" />
   </ItemGroup>
