@@ -20,7 +20,7 @@ namespace TheSite.Controllers
       static APDBDef.WeiXinPraiseTableDef wp = APDBDef.WeiXinPraise;
       static APDBDef.WeiXinFavoriteTableDef wxf = APDBDef.WeiXinFavorite;
       static APDBDef.WeiXinPlayCountTableDef wxp = APDBDef.WeiXinPlayCount;
-      
+
 
       string requestOpenIdUrl = OAuth2Helper.ProcessGetOAuthUrl(WeixinConfigHelper.AuthReturnUrl);
 
@@ -53,6 +53,9 @@ namespace TheSite.Controllers
       //[GetOpenId]
       public ActionResult Index()
       {
+         var dics = APBplDef.ResPickListItemBplBase.GetAll();
+         Business.Cache.ThisAppCache.SetCache(dics);
+
          var notExist = APBplDef.WeiXinUserInfoBpl.ConditionQuery(wxu.OpenId == OpenId, null, null, null).FirstOrDefault() == null;
          if (notExist)
          {
@@ -76,7 +79,7 @@ namespace TheSite.Controllers
 
       // GET:  Course/Home
 
-     // [OAuth]
+      // [OAuth]
       public ActionResult Home()
       {
          var wxe = APDBDef.WeiXinExpert;
@@ -93,7 +96,7 @@ namespace TheSite.Controllers
 
       // GET:  Course/List
 
-     // [OAuth]
+      // [OAuth]
       public ActionResult List()
       {
          return View();
@@ -174,7 +177,7 @@ namespace TheSite.Controllers
       // GET:  Course/Search
       // POST-Ajax:  Course/Search
 
-     // [OAuth]
+      // [OAuth]
       public ActionResult Search(SearchOption option)
       {
          return View(option);
@@ -188,18 +191,20 @@ namespace TheSite.Controllers
 
          option.CurrentOpenId = OpenId;
 
-         var query = APQuery.select(cr.CrosourceId, cr.Title, cr.Author, cr.FavoriteCount, cr.ProvinceId, cr.AreaId, cr.PraiseCount,
-            cr.AuthorCompany, cr.Description, cr.CreatedTime,//cr.ViewCount, cr.CommentCount, cr.DownCount //cr.FileExtName
-            mc.CourseId, mc.CourseTitle, mc.PlayCount, cf.FilePath,rc.CompanyName
-            )
-            .from(cr,
-                  mc.JoinInner(mc.ResourceId == cr.CrosourceId),
-                  rc.JoinInner(rc.CompanyId == cr.CompanyId),
-                  cf.JoinLeft(cf.FileId == mc.CoverId),
-                  wxf.JoinLeft(wxf.ResId == cr.CrosourceId & wxf.OpenId == OpenId),
-                  wxp.JoinLeft(wxp.ResourceId == cr.CrosourceId)
-                  //a.JoinInner(a.ActiveId==cr.ActiveId)
-                  )
+         var query = APQuery.select(cr.CrosourceId, cr.Title, cr.Author, cr.FavoriteCount, cr.WeiXinFavoriteCount,
+                                    cr.ProvinceId, cr.AreaId, cr.PraiseCount,cr.WeiXInPraiseCount,
+                                    cr.AuthorCompany, cr.Description, cr.CreatedTime,
+                                    mc.CourseId, mc.CourseTitle, mc.PlayCount, mc.WeiXinPlayCount,
+                                    cf.FilePath, rc.CompanyName
+                                   )
+                             .from(cr,
+                                    mc.JoinInner(mc.ResourceId == cr.CrosourceId),
+                                    rc.JoinInner(rc.CompanyId == cr.CompanyId),
+                                    cf.JoinLeft(cf.FileId == mc.CoverId)
+                                    //wxf.JoinLeft(wxf.ResId == cr.CrosourceId & wxf.OpenId == OpenId),
+                                    //wxp.JoinLeft(wxp.ResourceId == cr.CrosourceId)
+                                    //TODO:a.JoinInner(a.ActiveId==cr.ActiveId)
+                                    )
             .where(cr.StatePKID == CroResourceHelper.StateAllow & cr.PublicStatePKID == CroResourceHelper.Public) // 审核通过和公开的作品
             .order_by(cr.ActiveId.Desc)
             .primary(cr.CrosourceId);
@@ -222,7 +227,7 @@ namespace TheSite.Controllers
          }
 
          query.skip(current > 0 ? current * Paging.PageSize : 0)
-                   .take(Paging.PageSize);
+              .take(Paging.PageSize);
 
 
          //查询结果集
@@ -231,14 +236,15 @@ namespace TheSite.Controllers
          {
             return new CourseViewModel
             {
+               ResId = cr.CrosourceId.GetValue(r),
+               CourseId = mc.CourseId.GetValue(r),
                ImagePath = cf.FilePath.GetValue(r),
                Name = mc.CourseTitle.GetValue(r),
-               TeacherName = cr.Author.GetValue(r),// ci.TeacherName.GetValue(r),
-               PlayCount = mc.PlayCount.GetValue(r),  //TODO:ci.PlayCount.GetValue(r) + wxpv.WeiXinPlayCount.GetValue(r, "playCount"),
-               PraiseCount =cr.PraiseCount.GetValue(r),//TODO: ci.PraiseCount.GetValue(r) + wp.PariseNum.GetValue(r),
+               TeacherName = cr.Author.GetValue(r),
+               PlayCount = mc.PlayCount.GetValue(r) + mc.WeiXinPlayCount.GetValue(r),
+               PraiseCount = cr.PraiseCount.GetValue(r) + cr.WeiXInPraiseCount.GetValue(r),
                SchoolName = rc.CompanyName.GetValue(r),
-               //VideoId = 0,
-               LinkUrl = Url.Action("Details", new { resId = cr.CrosourceId.GetValue(r) }),
+               LinkUrl = Url.Action("Details", new { resId = cr.CrosourceId.GetValue(r), courseId = mc.CourseId.GetValue(r) }),
                CreateDate = DateTime.Now,
             };
          }).ToList();
@@ -255,81 +261,95 @@ namespace TheSite.Controllers
       // GET:  Course/Details
       // POST-Ajax:  Course/Details
 
-      [OAuth]
-      public ActionResult Details(int? resId)
+      //[OAuth]
+      public ActionResult Details(long resId, long courseId)
       {
-         if (resId == null)
+         if (resId == 0 || courseId == 0)
          {
             return RedirectToAction("List");
          }
 
-         //var courseInfo = APQuery.select(ci.Name, ci.PlayCount, ci.PraiseCount, ci.VideoId,
-         //                                                        ci.SchoolName, ci.SubjectName, ci.TeacherName, ci.GradeName, ci.SubjectId,
-         //                                                        ci.CreateDate, cim.PicName, wp.PariseNum, v.VideoName, wxpv.WeiXinPlayCount.As("playCount"), wxf.WksId)
-         //                                 .from(ci,
-         //                                          cim.JoinLeft(cim.VideoId == ci.VideoId),//关联获取视频图片
-         //                                          v.JoinInner(v.VideoId == ci.VideoId), //关联获取视频地址
-         //                                          wp.JoinLeft(wp.WksId == ci.VideoId), // 关联获取微信点赞数量
-         //                                                           wxpv.JoinLeft(wxpv.WksId == ci.VideoId),
-         //                                          wxf.JoinLeft(wxf.WksId == ci.VideoId & wxf.OpenId == OpenId) // 关联获取微信收藏表
-         //                                          )
-         //                                 .where(ci.VideoId == videoId)
-         //                                 .query(db, r =>
-         //                                 {
-         //                                    return new CourseInfo
-         //                                    {
-         //                                       Name = ci.Name.GetValue(r),
-         //                                       PlayCount = ci.PlayCount.GetValue(r) + wxpv.WeiXinPlayCount.GetValue(r, "playCount"),
-         //                                       PraiseCount = ci.PraiseCount.GetValue(r) + wp.PariseNum.GetValue(r),
-         //                                       SchoolName = ci.SchoolName.GetValue(r),
-         //                                       GradeName = ci.GradeName.GetValue(r),
-         //                                       SubjectName = ci.SubjectName.GetValue(r),
-         //                                       TeacherName = ci.TeacherName.GetValue(r),
-         //                                       VideoId = ci.VideoId.GetValue(r),
-         //                                       ImagePath = string.Format("{0}/{1}", ThisApp.UploadFilePath, cim.PicName.GetValue(r)),
-         //                                       VideoPath = string.Format("{0}/{1}", ThisApp.UploadFilePath, v.VideoName.GetValue(r)),
-         //                                       CreateDate = ci.CreateDate.GetValue(r),
-         //                                       IsFavorite = wxf.WksId.GetValue(r) > 0
-         //                                    };
-         //                                 }).FirstOrDefault();
+         var cf = APDBDef.Files;
+         var vf = APDBDef.Files.As("Videos");
+         var rc = APDBDef.ResCompany;
 
-         //var viewModel = new CourseDetailsViewModel { CourseInfo = courseInfo };
+         var dicCache = Business.Cache.ThisAppCache.GetCache<List<ResPickListItem>>();
+         if (dicCache == null)
+         {
+            var dics = APBplDef.ResPickListItemBplBase.GetAll();
+            Business.Cache.ThisAppCache.SetCache(dics);
+            dicCache = Business.Cache.ThisAppCache.GetCache<List<ResPickListItem>>();
+         }
 
+         var courseViewModel = APQuery.select(mc.CourseId, mc.CourseTitle, mc.PlayCount, mc.WeiXinPlayCount,
+                                              cr.CrosourceId, cr.Title, cr.PraiseCount,
+                                              cr.CrosourceId, cr.WeiXInPraiseCount, cr.WeiXinFavoriteCount,
+                                              rc.CompanyName, cr.SubjectPKID, cr.Author, cr.GradePKID,
+                                              cr.CreatedTime, cf.FilePath, vf.FilePath.As("VideoPath"), wxf.OccurId)
+                                          .from(cr,
+                                                mc.JoinInner(mc.ResourceId == cr.CrosourceId),
+                                                rc.JoinInner(rc.CompanyId == cr.CompanyId),
+                                                   cf.JoinLeft(mc.CoverId == cf.FileId),//关联获取视频图片
+                                                   vf.JoinInner(mc.VideoId == vf.FileId), //关联获取视频地址
+                                                   wxf.JoinLeft(wxf.OccurId == cr.CrosourceId & wxf.OpenId == OpenId) // 关联获取微信收藏表
+                                                   )
+                                          .where(cr.CrosourceId == resId & mc.CourseId == courseId)
+                                          .query(db, r =>
+                                          {
+                                             var grade = dicCache.Find(x => x.PickListItemId == cr.GradePKID.GetValue(r)).Name;
+                                             var subject = dicCache.Find(x => x.PickListItemId == cr.SubjectPKID.GetValue(r)).Name;
+                                             return new CourseViewModel
+                                             {
+                                                ResId = cr.CrosourceId.GetValue(r),
+                                                CourseId = mc.CourseId.GetValue(r),
+                                                Name = cr.Title.GetValue(r),
+                                                CourseName = mc.CourseTitle.GetValue(r),
+                                                PlayCount = mc.PlayCount.GetValue(r) + mc.WeiXinPlayCount.GetValue(r),
+                                                PraiseCount = cr.PraiseCount.GetValue(r) + cr.WeiXInPraiseCount.GetValue(r),
+                                                SchoolName = rc.CompanyName.GetValue(r),
+                                                GradeName = grade,
+                                                SubjectName = subject,
+                                                TeacherName = cr.Author.GetValue(r),
+                                                ImagePath = cf.FilePath.GetValue(r),
+                                                VideoPath = vf.FilePath.GetValue(r, "VideoPath"),
+                                                CreateDate = cr.CreatedTime.GetValue(r),
+                                                IsFavorite = wxf.OccurId.GetValue(r) > 0
+                                             };
+                                          }).FirstOrDefault();
 
-         return View();
+         return View(courseViewModel);
       }
 
       [HttpPost]
-      public ActionResult Details(int videoId)
+      public ActionResult Details(long resId)
       {
-         //var items = APQuery.select(cim.VideoId, cim.PicName)
-         //                            .from(cim, ci.JoinLeft(ci.VideoId == cim.VideoId))
-         //                            .where(cim.VideoId < videoId & ci.PrizeType > 0)
-         //                            .order_by(cim.VideoId.Desc)
-         //                            .take(Paging.PageSize)
-         //                            .query(db, r =>
-         //                            {
-         //                               videoId = cim.VideoId.GetValue(r);
-         //                               return new CourseInfo
-         //                               {
-         //                                  VideoId = videoId,
-         //                                  ImagePath = string.Format("{0}/{1}", ThisApp.UploadFilePath, cim.PicName.GetValue(r)),
-         //                                  LinkUrl = Url.Action("Details", new { videoId = videoId })
-         //                               };
-         //                            }).ToList();
+         var cf = APDBDef.Files;
+         var items = APQuery.select(mc.CourseId, mc.ResourceId, cf.FilePath)
+                                     .from(mc, cf.JoinLeft(mc.CoverId == cf.FileId))
+                                     .where(mc.ResourceId < resId)
+                                     .order_by(mc.ResourceId.Desc)
+                                     .take(Paging.PageSize)
+                                     .query(db, r =>
+                                     {
+                                        return new CourseViewModel
+                                        {
+                                           ImagePath = cf.FilePath.GetValue(r),
+                                           LinkUrl = Url.Action("Details", new { resId = mc.ResourceId.GetValue(r), courseId = mc.CourseId.GetValue(r) }),
+                                        };
+                                     }).ToList();
 
 
          return Json(new
          {
-           // items
+            items
          });
       }
 
 
-      // Post-Ajax:  Course/PraiseVideo
+      // Post-Ajax:  Course/PraiseResource
 
       [HttpPost]
-      public ActionResult PraiseResource(long resId)
+      public ActionResult Praise(long resId)
       {
          var wxp = APDBDef.WeiXinPraise;
 
@@ -338,13 +358,16 @@ namespace TheSite.Controllers
          {
             db.WeiXinPraiseDal.Insert(new WeiXinPraise
             {
-               //Attitude = 1,
-               //OpenId = OpenId,
-               //PraiseTime = DateTime.Now,
-               //WksId = videoId
+               OpenId = OpenId,
+               ResId = resId,
+               OccurTime = DateTime.Now
             });
-         }
 
+            APQuery.update(cr)
+               .set(cr.WeiXInPraiseCount, APSqlRawExpr.Expr("WeiXInPraiseCount +1"))
+               .where(wxp.ResId == resId)
+               .execute(db);
+         }
 
          return Json(new
          {
@@ -353,10 +376,10 @@ namespace TheSite.Controllers
       }
 
 
-      // Post-Ajax:  Course/PlayVideo
+      // Post-Ajax:  Course/Play
 
       [HttpPost]
-      public ActionResult Play(int courseId)
+      public ActionResult Play(long resId, long courseId)
       {
          var isNotPlayed = db.WeiXinPlayCountDal.ConditionQueryCount(wxp.CourseId == courseId & wxp.OpenId == OpenId) == 0;
          if (isNotPlayed)
@@ -364,19 +387,17 @@ namespace TheSite.Controllers
             db.WeiXinPlayCountDal.Insert(
             new WeiXinPlayCount
             {
-               //WeiXinPlayCount = 1,
-               //OpenId = OpenId,
-               //WksId = videoId
+               OpenId = OpenId,
+               ResourceId = resId,
+               CourseId = courseId,
+               OccurTime = DateTime.Now
             });
-         }
-         else
-         {
-            //APQuery.update(wxp)
-            //              .set(wxp.WeiXinPlayCount, APSqlRawExpr.Expr("weixin_play_count +1"))
-            //                      .where(wxp.WksId == videoId & wxp.OpenId == OpenId)
-            //              .execute(db);
-         }
 
+            APQuery.update(mc)
+               .set(mc.WeiXinPlayCount, APSqlRawExpr.Expr("WeiXinPlayCount +1"))
+               .where(wxp.ResourceId == resId & wxp.CourseId == courseId)
+               .execute(db);
+         }
 
          return Json(new
          {
@@ -390,7 +411,7 @@ namespace TheSite.Controllers
       // Post-Ajax:  Course/CancelFavorite
 
       [HttpPost]
-      public ActionResult Favorite(int resId)
+      public ActionResult Favorite(long resId)
       {
          var isNotFavorited = db.WeiXinFavoriteDal.ConditionQueryCount(wxf.ResId == resId & wxf.OpenId == OpenId) == 0;
          if (isNotFavorited)
@@ -398,10 +419,15 @@ namespace TheSite.Controllers
             db.WeiXinFavoriteDal.Insert(
             new WeiXinFavorite
             {
-               //FavoriteDate = DateTime.Now,
-               //OpenId = this.OpenId,
-               //WksId = videoId
+               OpenId = OpenId,
+               ResId = resId,
+               OccurTime = DateTime.Now
             });
+
+            APQuery.update(cr)
+               .set(cr.WeiXinFavoriteCount, APSqlRawExpr.Expr("WeiXinFavoriteCount +1"))
+               .where(wxp.ResourceId == resId)
+               .execute(db);
          }
 
 

@@ -4,7 +4,7 @@
 	{
 
       // 稳定的数据缓存时间（分钟）
-      public const int StableCacheMinutes = 20;
+      public const int StableCacheMinutes = 60;
 
 		// 不稳定数据缓存时间（分钟）
 		public const int UnstableCacheMinutes = 2;

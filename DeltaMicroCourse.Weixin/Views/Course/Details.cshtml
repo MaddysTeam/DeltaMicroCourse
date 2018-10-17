@@ -1,6 +1,6 @@
-﻿@model  TheSite.Models.CourseDetailsViewModel
+﻿@model  TheSite.Models.CourseViewModel
 @{
-	ViewBag.Title = Model.CourseInfo.Name;
+	ViewBag.Title = Model.Name;
 }
 
 <style type="text/css">
@@ -87,14 +87,14 @@
 					<ul class="listitem">
 						<li class="courseItem">
 							<div class="text">
-								<span class="addressName"><i class="iconfont iconline-media-play"></i> <small>@(Model.CourseInfo.PlayCount + "次播放")</small></span>
+								<span class="addressName"><i class="iconfont iconline-media-play"></i> <small>@(Model.PlayCount + "次播放")</small></span>
 								<i class="right iconfont iconline-fav-checked favorite" ><font size="2" class="favoriteLabel">收藏</font></i>
 							</div>
 						</li>
 
 					</ul>
-					<button class="block submit praise">点赞 <i class="iconfont iconline-like"></i> <small class="praiseNum">@Model.CourseInfo.PraiseCount</small></button>
-					<input type="hidden" class="praiseVal" value="@Model.CourseInfo.PraiseCount" />
+					<button class="block submit praise">点赞 <i class="iconfont iconline-like"></i> <small class="praiseNum">@Model.PraiseCount</small></button>
+					<input type="hidden" class="praiseVal" value="@Model.PraiseCount" />
 				</div>
 
 				<div>
@@ -130,37 +130,43 @@
 						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
 							<div class="text">
 								<label class="left">作品名称</label>
-								<label class="right"><small>@Model.CourseInfo.Name</small></label>
+								<label class="right"><small>@Model.Name</small></label>
 							</div>
 						</li>
+						@*<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
+							<div class="text">
+								<label class="left">当前微课</label>
+								<label class="right"><small>@Model.CourseName</small></label>
+							</div>
+						</li>*@
 						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
 							<div class="text">
 								<label class="left">学科</label>
-								<label class="right"><small>@Model.CourseInfo.SubjectName</small></label>
+								<label class="right"><small>@Model.SubjectName</small></label>
 							</div>
 						</li>
 						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
 							<div class="text">
 								<label class="left">年级</label>
-								<label class="right"><small>@Model.CourseInfo.GradeName</small></label>
+								<label class="right"><small>@Model.GradeName</small></label>
 							</div>
 						</li>
 						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
 							<div class="text">
 								<label class="left">作者</label>
-								<label class="right"><small>@Model.CourseInfo.TeacherName</small></label>
+								<label class="right"><small>@Model.TeacherName</small></label>
 							</div>
 						</li>
 						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
 							<div class="text">
 								<label class="left">所在学校</label>
-								<label class="right"><small>@Model.CourseInfo.SchoolName</small></label>
+								<label class="right"><small>@Model.SchoolName</small></label>
 							</div>
 						</li>
 						<li class="btn-details" href="#right_overlay_aside" data-toggle="aside">
 							<div class="text">
 								<label class="left">创建日期</label>
-								<label class="right"><small>@Model.CourseInfo.CreateDate</small></label>
+								<label class="right"><small>@Model.CreateDate</small></label>
 							</div>
 						</li>
 					</ul>
@@ -178,7 +184,7 @@
 				$(function () {
 
 					// 其他视频列表
-					$.post('@Url.Action("Details")', { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+					$.post('@Url.Action("Details")', { resId: '@Model.ResId' }, function (data) {
 						var itemString = '';
 						$(data.items).each(function () {
 							itemString += new courseItem(this).getTemplate('<li data-url="' + this.LinkUrl + '"><img src="' + this.ImagePath + '" /></li>');
@@ -192,11 +198,11 @@
 					});
 
 					//收藏按钮点击事件
-					var isFavorite = '@Model.CourseInfo.IsFavorite' == 'True' ? true : false;
+					var isFavorite = '@Model.IsFavorite' == 'True' ? true : false;
 					$('.favorite').on(A.options.clickEvent, function () {
 						isFavorite = !isFavorite;
-						var $this = $(this), url = isFavorite ? '@Url.Action("FavoriteVideo")' : '@Url.Action("CancelFavorite")';
-						$.post(url, { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+						var $this = $(this), url = isFavorite ? '@Url.Action("Favorite")' : '@Url.Action("CancelFavorite")';
+						$.post(url, { resId: '@Model.ResId' }, function (data) {
 							if (data.isSuccess == true) {
 								$this.css('color', isFavorite ? '#F49123' : '#AAAAAA');
 								A.showToast(isFavorite ? '收藏成功! :)' : '取消收藏!');
@@ -211,7 +217,7 @@
 
 					//绑定点赞按钮事件
 					var praiseBtn = $('.praise').on(A.options.clickEvent, function (e) {
-						$.post('@Url.Action("PraiseVideo")', { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+						$.post('@Url.Action("Praise")', { resId: '@Model.ResId' }, function (data) {
 							if (data.isSuccess == true) {
 								A.showToast('点赞成功! :)')
 								var praiseVal = parseInt($('.praiseVal').val());
@@ -225,16 +231,15 @@
 						});
 
 					});
+
 				});
-
-
 
 			</script>
 
 			<script type="text/javascript">
 
 				var playfunc = function () {
-					$.post('@Url.Action("PlayVideo")', { videoId: '@Model.CourseInfo.VideoId' }, function (data) {
+					$.post('@Url.Action("Play")', { resId: '@Model.ResId', courseId:'@Model.CourseId' }, function (data) {
 						if (data.isSuccess == true) {
 							A.showToast('播放成功! :)')
 						} else {
@@ -243,7 +248,7 @@
 
 					});
 				}
-				var videoPath = '@Model.CourseInfo.VideoPath';
+				var videoPath = '@Model.VideoPath';
 				videoPlay(CKobject, 'a1', '../Assets/plugins/ckplayer6.8/ckplayer/ckplayer.swf', playfunc, videoPath);
 
 			</script>

@@ -4,13 +4,6 @@ using System;
 namespace TheSite.Models
 {
 
-	public class CourseDetailsViewModel
-	{
-
-		//public CourseInfo CourseInfo { get; set; }
-
-	}
-
 
    public class CourseViewModel
    {
@@ -18,13 +11,18 @@ namespace TheSite.Models
       public string VideoPath { get; set; }
       public string LinkUrl { get; set; }
       public bool IsFavorite { get; set; }
-      public string Name { get; set; }
+      public long ResId { get; set; } // 作品id
+      public long CourseId { get; set;} //当前微课
+      public string Name { get; set; }  //作品名称
+      public string CourseName { get; set; }  //当前微课名称
       public string TeacherName { get; set; }
       public int PlayCount { get; set; }
       public int PraiseCount { get; set; }
       public string SchoolName { get; set; }
       public int VideoId { get; set; }
       public DateTime CreateDate { get; set; }
+      public string GradeName { get; set; }
+      public string SubjectName { get; set; }
    }
 
 
